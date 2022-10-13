@@ -181,7 +181,7 @@ public class LibraryDAO {
 		return tranHistoryList;
 	}
 	
-	//Book DAO
+	//Admin DAO
 	public String AddBook(Books book) throws ClassNotFoundException, SQLException {
 		Connection connection = ConnectionHelper.getConnection();
 		String cmd = "insert into Books(Id,Name,Author,Edition,Dept,TotalBooks)values(?,?,?,?,?,?)";
@@ -194,5 +194,16 @@ public class LibraryDAO {
 		pst.setInt(6, book.getNoOfBooks());
 		pst.executeUpdate();
 		return "Book Added.";
+	}
+	
+	public String AddUser(String Username,String Password) throws ClassNotFoundException, SQLException {
+		Connection connection=ConnectionHelper.getConnection();
+		String cmd="Insert into LibUsers (Username,Password) values(?,?)"; 
+		PreparedStatement pst=connection.prepareStatement(cmd);
+		pst.setString(1, Username);
+		pst.setString(2, Password);
+		pst.executeUpdate();
+		return "Successfully Added.";
+		
 	}
 }
