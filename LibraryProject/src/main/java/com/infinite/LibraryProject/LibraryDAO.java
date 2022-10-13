@@ -204,6 +204,37 @@ public class LibraryDAO {
 		pst.setString(2, Password);
 		pst.executeUpdate();
 		return "Successfully Added.";
+	}
+	
+	public Books searchBook(int bookid) throws ClassNotFoundException, SQLException {
+		Connection connection = ConnectionHelper.getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement("Select * from Books where id = ?");
+		preparedStatement.setInt(1, bookid);
+		ResultSet resultSet = preparedStatement.executeQuery();
 		
+		Books book = null;
+		if (resultSet.next()) {
+			book = new Books();
+			book.setId(bookid);
+			book.setName(resultSet.getString("name"));
+			book.setAuthor(resultSet.getString("author"));
+			book.setEdition(resultSet.getString("edition"));
+			book.setDept(resultSet.getString("dept"));
+			book.setNoOfBooks(Integer.parseInt(resultSet.getString("TotalBooks")));
+		}
+		return book;
+	}
+	
+	public String updateBook(Books book) throws ClassNotFoundException, SQLException {
+		Connection connection = ConnectionHelper.getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement("Update Books SET name=?, author=?, edition=?, dept=?, totalbooks=? where id=?");
+		preparedStatement.setString(1, book.getName());
+		preparedStatement.setString(2, book.getAuthor());
+		preparedStatement.setString(3, book.getEdition());
+		preparedStatement.setString(4, book.getDept());
+		preparedStatement.setInt(5, book.getNoOfBooks());
+		preparedStatement.setInt(6, book.getId());
+		preparedStatement.executeUpdate();
+		return "Book Updated Successfully.";
 	}
 }
